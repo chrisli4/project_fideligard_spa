@@ -87,7 +87,6 @@ express()
 .use(bodyParser.json())
 .use(bodyParser.urlencoded({extended: false}))
 .use(staticFiles)
-.use('/*', staticFiles)
 .use(express.static(path.join(__dirname, 'public')))
 .get('/api/v1/stocks', (req, res, next) => {
 
@@ -106,5 +105,5 @@ express()
 		next(e);
 	})
 })
-.get('/', (req, res) => res.render('pages/index'))
+.use('/', staticFiles)
 .listen(PORT, () => console.log(`Listening on ${ PORT }`))
