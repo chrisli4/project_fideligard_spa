@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001
 
 const API_CLIENT_KEY = process.env.API_CLIENT_KEY
 const baseUrl = `https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?api_key=${ API_CLIENT_KEY }&qopts.columns=ticker,date,close`
-const moment = require('moment');
+const moment = require('moment-holiday');
 
 const staticFiles = express.static(path.join(__dirname, '../../client/build'))
 
@@ -40,9 +40,9 @@ const dayDiff = (date, days) => {
 	return moment(date, 'YYYY-MM-DD').subtract(days, 'days').format('YYYY-MM-DD').toString();
 }
 
-const removeWeekends = (date) => {
+const removeWeekendsHolidays = (date) => {
 	let correctedDate = moment(date, 'YYYY-MM-DD')
-	while(correctedDate.day() === 0 || correctedDate.day() === 6) {
+	while(correctedDate.day() === 0 || correctedDate.day() === 6 || (correctedDate.isHoliday() !== false)) {
 		correctedDate = correctedDate.subtract(1, 'days')
 	}
 	return correctedDate.format('YYYY-MM-DD').toString();
@@ -52,17 +52,19 @@ const parseResults = (data, endDate) => {
 
 	const dateArr = [{
 		diff: 'today',
-		date: removeWeekends(endDate)
+		date: removeWeekendsHolidays(endDate)
 	}, {
 		diff: 'oneDay',
-		date: removeWeekends(dayDiff(endDate, 1))
+		date: removeWeekendsHolidays(dayDiff(endDate, 1))
 	}, {
 		diff: 'sevenDays',
-		date: removeWeekends(dayDiff(endDate, 7))
+		date: removeWeekendsHolidays(dayDiff(endDate, 7))
 	}, {
 		diff: 'thirtyDays',
-		date: removeWeekends(dayDiff(endDate, 30))
+		date: removeWeekendsHolidays(dayDiff(endDate, 30))
 	}];
+
+	console.log(dateArr[3])
 
 	const results = data.reduce((acc, curr, i) => {
 
@@ -93,7 +95,9 @@ express()
 	const symbols = req.query.symbols
 
 	const endDate = req.query.end_date
-	const startDate = dayDiff(endDate, 32)
+	const startDate = dayDiff(endDate, 40)
+
+	console.log(`${ baseUrl }&ticker=${ symbols }&date.gte=${ startDate }&date.lte=${ endDate }`)
 
 	fetch(`${ baseUrl }&ticker=${ symbols }&date.gte=${ startDate }&date.lte=${ endDate }`)
 	.then(checkStatus)

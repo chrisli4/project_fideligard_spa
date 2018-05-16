@@ -2,7 +2,7 @@ import * as Actions from './actions';
 import { combineReducers } from 'redux';
 
 const initState = {
-	date: '2014-02-28',
+	date: '2014-05-01',
 	stockWatchList: [
 		'AAPL',
 		'AMD',
@@ -22,21 +22,21 @@ const initState = {
 	specificStockData: {
 		stock: {
 			symbol: 'AAPL',
-			today: 526.24,
-			oneDay: 527.67,
-			sevenDays: 525.25,
-			thirtyDays: 500.75
+			today: 590.09,
+			oneDay: 588.09,
+			sevenDays: 656.09,
+			thirtyDays: 644.09
 		},
 		isFetching: false,
 		error: null
 	},
 	portfolio: {},
 	transactions: [{
-		date: '2014-02-28',
+		date: '2014-05-01',
 		symbol: 'AAPL',
 		quantity: 10,
-		price: 526.24,
-		cost: 5262.40,
+		price: 590.09,
+		cost: 5900.90,
 		action: 'BUY'
 	}],
 	balance: 100000,

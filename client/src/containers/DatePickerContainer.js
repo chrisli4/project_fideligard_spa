@@ -4,8 +4,8 @@ import { getStock, getStocks, setDate } from '../actions'
 import DatePicker from '../components/DatePicker'
 import { unixToString, unixToFormatted } from '../helpers/date'
 
-const MIN_UNIX_DATE = '1393632000';
-const MAX_UNIX_DATE = '1519776000';
+const MIN_UNIX_DATE = '1398902400';
+const MAX_UNIX_DATE = '1493596800';
 const ONE_DAY_SECS = '86400'; 
 
 const mapStateToProps = (state, ownProps) => {
